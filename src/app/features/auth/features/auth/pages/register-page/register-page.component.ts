@@ -1,11 +1,43 @@
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { AuthService } from '../../../../../../services/auth.service';
+
 
 @Component({
+  standalone: true,
   selector: 'app-register-page',
-  imports: [],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './register-page.component.html',
-  styleUrl: './register-page.component.scss'
+  providers: [AuthService],
 })
 export class RegisterPageComponent {
+  form: FormGroup;
 
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {
+    this.form = this.fb.group({
+      username: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
+    });
+  }
+
+  register() {
+    if (this.form.invalid) return;
+
+    this.authService.register(this.form.value).subscribe({
+      next: (res) => {
+        localStorage.setItem('token', res.token);
+        this.router.navigate(['/products']);
+      },
+      error: (err) => {
+        console.error('Registration failed', err);
+      },
+    });
+  }
 }
