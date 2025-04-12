@@ -6,7 +6,6 @@ import { ProductService } from '../../../../../../services/product.service';
 import { RouterModule } from '@angular/router';
 
 
-
 @Component({
   standalone: true,
   selector: 'app-product-list-page',
@@ -16,7 +15,6 @@ import { RouterModule } from '@angular/router';
 })
 export class ProductListPageComponent implements OnInit {
   products: Product[] = [];
-  paginated: Product[] = [];
 
   currentPage = 1;
   pageSize = 8;
@@ -24,18 +22,31 @@ export class ProductListPageComponent implements OnInit {
   sortBy: keyof Product = 'title';
   sortAsc = true;
 
+  loading = false;
+
   constructor(private productService: ProductService) {}
 
   ngOnInit() {
-    this.productService.getProducts().subscribe((res) => {
-      this.products = res;
-      this.applyPagination();
+    this.loadProducts();
+  }
+
+  loadProducts() {
+    this.loading = true;
+    this.productService.getProductsByPage(this.currentPage, this.pageSize).subscribe({
+      next: (res) => {
+        this.products = this.sortProducts(res);
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Failed to load products', err);
+        this.loading = false;
+      }
     });
   }
 
   changePage(page: number) {
     this.currentPage = page;
-    this.applyPagination();
+    this.loadProducts();
   }
 
   toggleSort(field: keyof Product) {
@@ -45,11 +56,11 @@ export class ProductListPageComponent implements OnInit {
       this.sortBy = field;
       this.sortAsc = true;
     }
-    this.applyPagination();
+    this.products = this.sortProducts(this.products);
   }
 
-  applyPagination() {
-    const sorted = [...this.products].sort((a, b) => {
+  sortProducts(data: Product[]): Product[] {
+    return [...data].sort((a, b) => {
       const aVal = a[this.sortBy];
       const bVal = b[this.sortBy];
 
@@ -61,9 +72,5 @@ export class ProductListPageComponent implements OnInit {
 
       return this.sortAsc ? (+aVal - +bVal) : (+bVal - +aVal);
     });
-
-    const start = (this.currentPage - 1) * this.pageSize;
-    const end = start + this.pageSize;
-    this.paginated = sorted.slice(start, end);
   }
 }
