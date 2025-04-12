@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../../../../services/auth.service';
+import { NotificationService } from '../../../../../../services/notification.service';
 
 
 @Component({
@@ -17,7 +18,8 @@ export class LoginPageComponent {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private notificationService: NotificationService
   ) {
     this.form = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -27,15 +29,16 @@ export class LoginPageComponent {
 
   login() {
     if (this.form.invalid) return;
-
+  
     this.authService.login(this.form.value).subscribe({
       next: (res) => {
         localStorage.setItem('token', res.token);
+        this.notificationService.success('Login successful');
         this.router.navigate(['/products']);
       },
-      error: (err) => {
-        console.error('Login failed', err);
-      },
+      error: () => {
+        this.notificationService.error('Login failed. Check credentials.');
+      }
     });
   }
 }

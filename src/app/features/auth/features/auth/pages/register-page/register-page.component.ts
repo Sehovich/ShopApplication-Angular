@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../../../../services/auth.service';
+import { NotificationService } from '../../../../../../services/notification.service';
 
 
 @Component({
@@ -10,7 +11,6 @@ import { AuthService } from '../../../../../../services/auth.service';
   selector: 'app-register-page',
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './register-page.component.html',
-  providers: [AuthService],
 })
 export class RegisterPageComponent {
   form: FormGroup;
@@ -18,7 +18,8 @@ export class RegisterPageComponent {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private notificationService: NotificationService
   ) {
     this.form = this.fb.group({
       username: ['', Validators.required],
@@ -33,10 +34,11 @@ export class RegisterPageComponent {
     this.authService.register(this.form.value).subscribe({
       next: (res) => {
         localStorage.setItem('token', res.token);
+        this.notificationService.success('Registration successful');
         this.router.navigate(['/products']);
       },
-      error: (err) => {
-        console.error('Registration failed', err);
+      error: () => {
+        this.notificationService.error('Registration failed');
       },
     });
   }

@@ -3,6 +3,7 @@ import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../material.module';
 import { BasketService } from '../../services/basket.service';
+import { NotificationService } from '../../services/notification.service';
 
 
 @Component({
@@ -21,10 +22,15 @@ export class NavbarComponent {
     return this.basketService.getItems().length;
   }
 
-  constructor(private router: Router, private basketService: BasketService) {}
+  constructor(
+    private router: Router,
+    private basketService: BasketService,
+    private notificationService: NotificationService
+  ) {}
 
   logout() {
     localStorage.removeItem('token');
+    this.notificationService.success('You have been logged out');
     this.router.navigate(['/auth/login']);
   }
 }
