@@ -1,0 +1,19 @@
+<mat-toolbar color="primary">
+    <span class="logo" routerLink="/">🛍 Shop</span>
+    <span class="spacer"></span>
+  
+    <button mat-button routerLink="/products">Products</button>
+    <button mat-button routerLink="/basket">
+      Basket <mat-icon>shopping_cart</mat-icon> ({{ basketCount }})
+    </button>
+  
+    <ng-container *ngIf="isLoggedIn; else authLinks">
+      <button mat-button (click)="logout()">Logout</button>
+    </ng-container>
+  
+    <ng-template #authLinks>
+      <button mat-button routerLink="/auth/login">Login</button>
+      <button mat-button routerLink="/auth/register">Register</button>
+    </ng-template>
+  </mat-toolbar>
+  

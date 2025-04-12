@@ -8,19 +8,33 @@
   </div>
   
   <div class="product-grid">
-    <mat-card *ngFor="let product of paginated" class="product-card">
-      <img mat-card-image [src]="product.thumbnail" />
-      <mat-card-title>{{ product.title }}</mat-card-title>
-      <mat-card-subtitle>\${{ product.price }}</mat-card-subtitle>
-      <mat-card-content>
-        <p>{{ product.description }}</p>
-      </mat-card-content>
-    </mat-card>
+    <a
+      *ngFor="let product of paginated"
+      [routerLink]="['/products', product.id]"
+      style="text-decoration: none; color: inherit;"
+    >
+      <mat-card class="product-card">
+        <img mat-card-image [src]="product.thumbnail" />
+        <mat-card-title>{{ product.title }}</mat-card-title>
+        <mat-card-subtitle>\${{ product.price }}</mat-card-subtitle>
+        <mat-card-content>
+          <p>{{ product.description }}</p>
+        </mat-card-content>
+      </mat-card>
+    </a>
   </div>
   
   <div class="pagination">
-    <button mat-stroked-button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">Prev</button>
+    <button mat-stroked-button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">
+      Prev
+    </button>
     <span class="page-number">Page {{ currentPage }}</span>
-    <button mat-stroked-button (click)="changePage(currentPage + 1)" [disabled]="currentPage * pageSize >= products.length">Next</button>
+    <button
+      mat-stroked-button
+      (click)="changePage(currentPage + 1)"
+      [disabled]="currentPage * pageSize >= products.length"
+    >
+      Next
+    </button>
   </div>
   

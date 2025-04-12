@@ -3,13 +3,14 @@ import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../../../../../shared/material.module';
 import { Product } from '../../../../../../models/product.model';
 import { ProductService } from '../../../../../../services/product.service';
+import { RouterModule } from '@angular/router';
 
 
 
 @Component({
   standalone: true,
   selector: 'app-product-list-page',
-  imports: [CommonModule, MaterialModule],
+  imports: [CommonModule, MaterialModule, RouterModule],
   templateUrl: './product-list-page.component.html',
   styleUrls: ['./product-list-page.component.scss']
 })
