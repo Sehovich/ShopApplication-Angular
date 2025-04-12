@@ -1,0 +1,26 @@
+<mat-toolbar color="primary">
+    <span>Shop</span>
+  </mat-toolbar>
+  
+  <div class="toolbar">
+    <button mat-button (click)="toggleSort('title')">Sort by Title</button>
+    <button mat-button (click)="toggleSort('price')">Sort by Price</button>
+  </div>
+  
+  <div class="product-grid">
+    <mat-card *ngFor="let product of paginated" class="product-card">
+      <img mat-card-image [src]="product.thumbnail" />
+      <mat-card-title>{{ product.title }}</mat-card-title>
+      <mat-card-subtitle>\${{ product.price }}</mat-card-subtitle>
+      <mat-card-content>
+        <p>{{ product.description }}</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  
+  <div class="pagination">
+    <button mat-stroked-button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">Prev</button>
+    <span class="page-number">Page {{ currentPage }}</span>
+    <button mat-stroked-button (click)="changePage(currentPage + 1)" [disabled]="currentPage * pageSize >= products.length">Next</button>
+  </div>
+  
