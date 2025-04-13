@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../material.module';
 import { BasketService } from '../../services/basket.service';
 import { NotificationService } from '../../services/notification.service';
+import { AuthStore } from '../../features/auth/store/auth.store';
 
 
 @Component({
@@ -21,6 +22,15 @@ export class NavbarComponent {
   get basketCount(): number {
     return this.basketService.getItems().length;
   }
+
+  get userEmail(): string | null {
+    return AuthStore.getUserEmail();
+  }
+
+  get username(): string | null {
+    return AuthStore.getUsername();
+  }
+  
 
   constructor(
     private router: Router,

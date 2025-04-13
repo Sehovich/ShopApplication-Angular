@@ -1,19 +1,32 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { LoginRequest, RegisterRequest, AuthResponse } from '../models/auth.model';
-import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
+import { LoginRequest, RegisterRequest } from '../models/auth.model';
+import { AuthStore } from '../features/auth/store/auth.store';
+
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private readonly apiUrl = 'https://localhost:5001/api/auth';
+  private baseUrl = `${environment.apiUrl}/auth`;
 
   constructor(private http: HttpClient) {}
 
-  login(data: LoginRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, data);
+  login(data: LoginRequest) {
+    return this.http.post<{ token: string }>(`${this.baseUrl}/login`, data);
   }
 
-  register(data: RegisterRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/register`, data);
+  register(data: RegisterRequest) {
+    return this.http.post<{ message: string }>(`${this.baseUrl}/register`, data);
+  }
+
+  logout(): void {
+    AuthStore.clear();
+  }
+
+  getAuthHeaders(): HttpHeaders {
+    const token = AuthStore.getToken();
+    return new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
   }
 }

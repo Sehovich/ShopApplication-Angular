@@ -1,6 +1,8 @@
 <mat-toolbar color="primary">
-    <span class="logo" routerLink="/">🛍 Shop</span>
-    <span class="spacer"></span>
+  <span>Shop</span>
+  <span class="spacer"></span>
+  <span *ngIf="username">Welcome, {{ username }}</span>
+
   
     <button mat-button routerLink="/products">Products</button>
     <button mat-button routerLink="/favorites">Favorites</button>
