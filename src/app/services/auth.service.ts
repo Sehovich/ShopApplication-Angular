@@ -20,8 +20,9 @@ export class AuthService {
   }
 
   logout(): void {
-    AuthStore.clear();
+    localStorage.removeItem('access_token');
   }
+  
 
   getAuthHeaders(): HttpHeaders {
     const token = AuthStore.getToken();

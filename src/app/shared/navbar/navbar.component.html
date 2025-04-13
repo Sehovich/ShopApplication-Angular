@@ -15,7 +15,7 @@
     <ng-container *ngIf="isLoggedIn; else authLinks">
       <button mat-button (click)="logout()">Logout</button>
     </ng-container>
-  
+    
     <ng-template #authLinks>
       <button mat-button routerLink="/auth/login">Login</button>
       <button mat-button routerLink="/auth/register">Register</button>

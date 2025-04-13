@@ -5,6 +5,7 @@ import { MaterialModule } from '../material.module';
 import { BasketService } from '../../services/basket.service';
 import { NotificationService } from '../../services/notification.service';
 import { AuthStore } from '../../features/auth/store/auth.store';
+import { AuthService } from '../../services/auth.service';
 
 
 @Component({
@@ -16,7 +17,7 @@ import { AuthStore } from '../../features/auth/store/auth.store';
 })
 export class NavbarComponent {
   get isLoggedIn(): boolean {
-    return !!localStorage.getItem('token');
+    return AuthStore.isAuthenticated(); 
   }
 
   get basketCount(): number {
@@ -35,12 +36,12 @@ export class NavbarComponent {
   constructor(
     private router: Router,
     private basketService: BasketService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private authService: AuthService
   ) {}
 
-  logout() {
-    localStorage.removeItem('token');
-    this.notificationService.success('You have been logged out');
+  logout(): void {
+    this.authService.logout();
     this.router.navigate(['/auth/login']);
   }
 }
