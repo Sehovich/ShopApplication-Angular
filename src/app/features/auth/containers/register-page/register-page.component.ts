@@ -20,14 +20,21 @@ export class RegisterPageComponent {
   constructor(private authService: AuthService, private router: Router) {}
 
   onSubmit(): void {
+    
+    this.error = null;
+    this.success = null;
+  
     this.authService.register(this.form).subscribe({
       next: () => {
         this.success = 'Registration successful. Redirecting to login...';
         setTimeout(() => this.router.navigate(['/auth/login']), 1500);
       },
-      error: () => {
+      error: (err) => {
+        console.error('[Register error]', err);
         this.error = 'Registration failed. Email may already exist.';
       }
     });
   }
+  
+  
 }
