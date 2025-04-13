@@ -42,6 +42,7 @@ export class NavbarComponent {
 
   logout(): void {
     this.authService.logout();
+    this.notificationService.success('You have been logged out');
     this.router.navigate(['/auth/login']);
   }
 }

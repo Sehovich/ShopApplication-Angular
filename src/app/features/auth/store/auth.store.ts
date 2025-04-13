@@ -20,7 +20,7 @@ export class AuthStore {
   static isAuthenticated(): boolean {
     const token = this.getToken();
     if (!token) return false;
-
+  
     try {
       const decoded = jwtDecode<DecodedToken>(token);
       return decoded.exp * 1000 > Date.now(); 

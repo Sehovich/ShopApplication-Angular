@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MaterialModule } from '../../../../shared/material.module';
 import { AuthStore } from '../../store/auth.store';
+import { NotificationService } from '../../../../services/notification.service';
 
 
 
@@ -17,19 +18,24 @@ import { AuthStore } from '../../store/auth.store';
 export class LoginPageComponent {
   form: LoginRequest = { email: '', password: '' };
   error: string | null = null;
-
-  constructor(private authService: AuthService, private router: Router, ) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private notificationService: NotificationService
+  ) {}
+ 
 
   onSubmit(): void {
     this.authService.login(this.form).subscribe({
       next: (res) => {
         AuthStore.setToken(res.token);
+        this.notificationService.success('Login successful');
         this.router.navigate(['/products']);
       },
       error: (err) => {
-        this.error = 'Invalid email or password.';
-        console.error('[Login Error]', err);
+        this.notificationService.error('Invalid email or password.');
       }
     });
   }
+  
 }
