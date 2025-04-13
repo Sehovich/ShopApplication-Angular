@@ -6,7 +6,7 @@ import { ProductListPageComponent } from './features/auth/containers/product-lis
 import { ProductDetailsPageComponent } from './features/auth/containers/product-details-page/product-details-page.component';
 import { BasketPageComponent } from './features/auth/containers/basket-page/basket-page.component';
 import { FavoriteProductsPageComponent } from './features/auth/containers/favorite-products-page/favorite-products-page.component';
-import { MyAccountPageComponent } from './features/auth/containers/my-account-page/my-account-page.component';
+import { MyAccountPageComponent } from './features/account/containers/my-account-page/my-account-page.component';
 
 import { authGuard } from './core/guards/auth.guard';
 

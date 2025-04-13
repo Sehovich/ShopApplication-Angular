@@ -1,0 +1,11 @@
+<mat-card *ngIf="!isLoading && userInfo">
+  <mat-card-title>Welcome, {{ userInfo.username }}!</mat-card-title>
+  <mat-card-content>
+    <p><strong>Email:</strong> {{ userInfo.email }}</p>
+    <p><strong>User ID:</strong> {{ userInfo.id }}</p>
+  </mat-card-content>
+</mat-card>
+
+<div *ngIf="isLoading">
+  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>
