@@ -1,45 +1,33 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../../services/auth.service';
+import { RegisterRequest } from '../../../../models/auth.model';
+import { MaterialModule } from '../../../../shared/material.module';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../../../../../services/auth.service';
-import { NotificationService } from '../../../../../../services/notification.service';
+import { FormsModule } from '@angular/forms';
 
 
 @Component({
-  standalone: true,
   selector: 'app-register-page',
-  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './register-page.component.html',
+  imports: [MaterialModule, CommonModule, FormsModule],
 })
 export class RegisterPageComponent {
-  form: FormGroup;
+  form: RegisterRequest = { email: '', username: '', password: '' };
+  error: string | null = null;
+  success: string | null = null;
 
-  constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private router: Router,
-    private notificationService: NotificationService
-  ) {
-    this.form = this.fb.group({
-      username: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
-    });
-  }
+  constructor(private authService: AuthService, private router: Router) {}
 
-  register() {
-    if (this.form.invalid) return;
-
-    this.authService.register(this.form.value).subscribe({
-      next: (res) => {
-        localStorage.setItem('token', res.token);
-        this.notificationService.success('Registration successful');
-        this.router.navigate(['/products']);
+  onSubmit(): void {
+    this.authService.register(this.form).subscribe({
+      next: () => {
+        this.success = 'Registration successful. Redirecting to login...';
+        setTimeout(() => this.router.navigate(['/auth/login']), 1500);
       },
       error: () => {
-        this.notificationService.error('Registration failed');
-      },
+        this.error = 'Registration failed. Email may already exist.';
+      }
     });
   }
 }

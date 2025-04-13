@@ -1,23 +1,24 @@
-<h2>Register</h2>
+<div class="register-container">
+  <h2>Register</h2>
+  <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
+    <mat-form-field class="w-full">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" name="email" [(ngModel)]="form.email" required />
+    </mat-form-field>
 
-<form [formGroup]="form" (ngSubmit)="register()">
-  <label>Username:</label>
-  <input type="text" formControlName="username" />
-  <div *ngIf="form.get('username')?.invalid && form.get('username')?.touched">
-    Username is required.
-  </div>
+    <mat-form-field class="w-full">
+      <mat-label>Username</mat-label>
+      <input matInput type="text" name="username" [(ngModel)]="form.username" required />
+    </mat-form-field>
 
-  <label>Email:</label>
-  <input type="email" formControlName="email" />
-  <div *ngIf="form.get('email')?.invalid && form.get('email')?.touched">
-    Valid email required.
-  </div>
+    <mat-form-field class="w-full">
+      <mat-label>Password</mat-label>
+      <input matInput type="password" name="password" [(ngModel)]="form.password" required />
+    </mat-form-field>
 
-  <label>Password:</label>
-  <input type="password" formControlName="password" />
-  <div *ngIf="form.get('password')?.invalid && form.get('password')?.touched">
-    Password is required.
-  </div>
+    <button mat-raised-button color="primary" type="submit">Register</button>
 
-  <button type="submit" [disabled]="form.invalid">Register</button>
-</form>
+    <div *ngIf="error" class="text-red-500 mt-2">{{ error }}</div>
+    <div *ngIf="success" class="text-green-600 mt-2">{{ success }}</div>
+  </form>
+</div>

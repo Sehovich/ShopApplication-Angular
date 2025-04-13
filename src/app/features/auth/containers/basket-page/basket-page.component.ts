@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MaterialModule } from '../../../../../../shared/material.module';
-import { BasketService } from '../../../../../../services/basket.service';
-import { Product } from '../../../../../../models/product.model';
-import { NotificationService } from '../../../../../../services/notification.service';
+import { MaterialModule } from '../../../../shared/material.module';
+import { Product } from '../../../../models/product.model';
+import { BasketService } from '../../../../services/basket.service';
+import { NotificationService } from '../../../../services/notification.service';
+
 
 
 @Component({

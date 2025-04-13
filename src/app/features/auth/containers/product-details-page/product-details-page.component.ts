@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { MaterialModule } from '../../../../../../shared/material.module';
-import { Product } from '../../../../../../models/product.model';
-import { ProductService } from '../../../../../../services/product.service';
+import { MaterialModule } from '../../../../shared/material.module';
+import { Product } from '../../../../models/product.model';
+import { ProductService } from '../../../../services/product.service';
+
 
 
 @Component({

@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ProductService } from '../../../../../../services/product.service';
-import { MaterialModule } from '../../../../../../shared/material.module';
-import { Product } from '../../../../../../models/product.model';
-import { NotificationService } from '../../../../../../services/notification.service';
+import { MaterialModule } from '../../../../shared/material.module';
+import { Product } from '../../../../models/product.model';
+import { ProductService } from '../../../../services/product.service';
+import { NotificationService } from '../../../../services/notification.service';
+
 
 
 @Component({
