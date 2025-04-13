@@ -1,43 +1,34 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { LoginRequest } from '../../../../models/auth.model';
+import { AuthService } from '../../../../services/auth.service';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../../../../../services/auth.service';
-import { NotificationService } from '../../../../../../services/notification.service';
+import { FormsModule } from '@angular/forms';
+import { MaterialModule } from '../../../../shared/material.module';
+import { AuthStore } from '../../store/auth.store';
+
 
 
 @Component({
-  standalone: true,
   selector: 'app-login-page',
-  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './login-page.component.html',
+  imports: [CommonModule, FormsModule, MaterialModule],
 })
 export class LoginPageComponent {
-  form: FormGroup;
+  form: LoginRequest = { email: '', password: '' };
+  error: string | null = null;
 
-  constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private router: Router,
-    private notificationService: NotificationService
-  ) {
-    this.form = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
-    });
-  }
+  constructor(private authService: AuthService, private router: Router, ) {}
 
-  login() {
-    if (this.form.invalid) return;
-  
-    this.authService.login(this.form.value).subscribe({
+  onSubmit(): void {
+    this.authService.login(this.form).subscribe({
       next: (res) => {
-        localStorage.setItem('token', res.token);
-        this.notificationService.success('Login successful');
+        AuthStore.setToken(res.token);
         this.router.navigate(['/products']);
       },
-      error: () => {
-        this.notificationService.error('Login failed. Check credentials.');
+      error: (err) => {
+        this.error = 'Invalid email or password.';
+        console.error('[Login Error]', err);
       }
     });
   }

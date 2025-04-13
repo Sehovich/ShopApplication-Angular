@@ -1,17 +1,18 @@
-<h2>Login</h2>
+<div class="login-container">
+  <h2>Login</h2>
+  <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+    <mat-form-field class="w-full">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" name="email" [(ngModel)]="form.email" required />
+    </mat-form-field>
 
-<form [formGroup]="form" (ngSubmit)="login()">
-  <label>Email:</label>
-  <input type="email" formControlName="email" />
-  <div *ngIf="form.get('email')?.invalid && form.get('email')?.touched">
-    Valid email required.
-  </div>
+    <mat-form-field class="w-full">
+      <mat-label>Password</mat-label>
+      <input matInput type="password" name="password" [(ngModel)]="form.password" required />
+    </mat-form-field>
 
-  <label>Password:</label>
-  <input type="password" formControlName="password" />
-  <div *ngIf="form.get('password')?.invalid && form.get('password')?.touched">
-    Password is required.
-  </div>
+    <button mat-raised-button color="primary" type="submit">Login</button>
 
-  <button type="submit" [disabled]="form.invalid">Login</button>
-</form>
+    <div *ngIf="error" class="text-red-500 mt-2">{{ error }}</div>
+  </form>
+</div>
