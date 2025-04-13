@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-register-page',
   templateUrl: './register-page.component.html',
+  styleUrls: ['./register-page.component.scss'],
   imports: [MaterialModule, CommonModule, FormsModule],
 })
 export class RegisterPageComponent {

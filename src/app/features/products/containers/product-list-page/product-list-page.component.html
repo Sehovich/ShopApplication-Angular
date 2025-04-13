@@ -1,0 +1,63 @@
+
+
+<div *ngIf="loading" class="loading">
+  <mat-spinner diameter="50"></mat-spinner>
+</div>
+
+<!-- Product Grid -->
+<div class="product-grid" *ngIf="!loading">
+  <div
+    class="product-card"
+    *ngFor="let product of products; trackBy: trackByProductId"
+  >
+    <div class="badge-new">New</div>
+
+    <div class="product-image">
+      <img [src]="product.thumbnail" [alt]="product.title" />
+      <div class="overlay-icons">
+        <button mat-icon-button (click)="toggleFavourite(product.id)">
+          <mat-icon>{{ isFavourite(product.id) ? 'favorite' : 'favorite_border' }}</mat-icon>
+        </button>
+        <button mat-icon-button [routerLink]="['/products', product.id]">
+          <mat-icon>search</mat-icon>
+        </button>
+        <button mat-icon-button (click)="addToBasket(product.id)">
+          <mat-icon>shopping_cart</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="product-info">
+      <div class="title">{{ product.title }}</div>
+      <div class="rating">
+        <mat-icon *ngFor="let star of [1, 2, 3, 4, 5]" [ngClass]="{ 'filled': star <= 4 }">star</mat-icon>
+      </div>
+      <div class="price">
+        <span class="old-price">$65</span>
+        <span class="current-price">${{ product.price }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Pagination -->
+<div class="pagination">
+  <button class="page-btn" (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">
+    &lt;
+  </button>
+  <button
+    class="page-btn"
+    *ngFor="let page of totalPages"
+    [ngClass]="{ active: page === currentPage }"
+    (click)="changePage(page)"
+  >
+    {{ page }}
+  </button>
+  <button
+    class="page-btn"
+    (click)="changePage(currentPage + 1)"
+    [disabled]="currentPage === totalPages.length"
+  >
+    &gt;
+  </button>
+</div>

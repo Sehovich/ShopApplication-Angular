@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../../../shared/material.module';
 import { RouterModule } from '@angular/router';
-import { BasketService } from '../../../basket/services/basket.service';
+import { BasketService } from '../../services/basket.service';
 import { NotificationService } from '../../../../services/notification.service';
-import { BasketItem } from '../../../basket/models/basket-item.model';
+import { BasketItem } from '../../models/basket-item.model';
 import { Product } from '../../../../models/product.model';
 
 @Component({
@@ -30,24 +30,22 @@ export class BasketPageComponent implements OnInit {
   loadBasket() {
     this.basketService.getBasketItems().subscribe({
       next: (data) => {
-        this.basketItems = data;
+        const grouped = new Map<number, { item: BasketItem; product: Product }>();
+
+        for (const entry of data) {
+          const existing = grouped.get(entry.item.productId);
+          if (existing) {
+            existing.item.quantity += entry.item.quantity;
+          } else {
+            grouped.set(entry.item.productId, { ...entry });
+          }
+        }
+
+        this.basketItems = Array.from(grouped.values());
         this.updateTotal();
       },
       error: () => {
         this.notificationService.error('Failed to load basket');
-      }
-    });
-  }
-
-  removeItem(productId: number) {
-    this.basketService.removeFromBasket(productId).subscribe({
-      next: () => {
-        this.basketItems = this.basketItems.filter(entry => entry.item.productId !== productId);
-        this.updateTotal();
-        this.notificationService.success('Item removed');
-      },
-      error: () => {
-        this.notificationService.error('Failed to remove item');
       }
     });
   }
@@ -57,23 +55,46 @@ export class BasketPageComponent implements OnInit {
     this.basketService.updateQuantity(entry.item.productId, newQty).subscribe({
       next: () => {
         entry.item.quantity = newQty;
-        this.updateTotal();
+        this.updateTotal(); // ✅ just update local total
       },
       error: () => this.notificationService.error('Failed to update quantity')
     });
   }
-
+  
   decreaseQuantity(entry: { item: BasketItem; product: Product }) {
     if (entry.item.quantity <= 1) return;
     const newQty = entry.item.quantity - 1;
     this.basketService.updateQuantity(entry.item.productId, newQty).subscribe({
       next: () => {
         entry.item.quantity = newQty;
-        this.updateTotal();
+        this.updateTotal(); // ✅ do not reload from backend
       },
       error: () => this.notificationService.error('Failed to update quantity')
     });
   }
+  
+
+removeItem(productId: number) {
+  const entry = this.basketItems.find(e => e.item.productId === productId);
+  if (!entry) return;
+
+  if (entry.item.quantity > 1) {
+    this.decreaseQuantity(entry); // Just lower quantity
+  } else {
+    this.basketService.removeFromBasket(productId).subscribe({
+      next: () => {
+        this.basketItems = this.basketItems.filter(e => e.item.productId !== productId);
+        this.basketService.refreshBasketCount(); // ✅ sync navbar count
+        this.updateTotal();
+        this.notificationService.success('Item removed');
+      },
+      error: () => {
+        this.notificationService.error('Failed to remove item');
+      }
+    });
+  }
+}
+
 
   updateTotal() {
     this.totalPrice = this.basketItems.reduce(

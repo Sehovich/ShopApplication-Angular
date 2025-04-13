@@ -39,20 +39,18 @@ export class NavbarComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    
     this.basketSub = this.basketService.getBasketCount().subscribe({
       next: count => this.basketCount = count,
     });
 
-    
     if (this.isLoggedIn) {
-      this.basketService.getBasketItems().subscribe(); 
+      this.basketService.getBasketItems().subscribe();
     }
   }
 
   logout(): void {
     this.authService.logout();
-    this.basketService.clearCache(); 
+    this.basketService.clearCache();
     this.notificationService.success('You have been logged out');
     this.router.navigate(['/auth/login']);
   }

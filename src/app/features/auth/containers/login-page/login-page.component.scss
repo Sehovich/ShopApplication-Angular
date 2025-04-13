@@ -1,0 +1,151 @@
+.auth-page {
+    font-family: 'Jost', sans-serif;
+    max-width: 500px;
+    margin: 4rem auto;
+    padding: 0 1rem 3rem;
+    color: #111;
+  
+    .auth-title {
+      font-size: 20px;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+  
+    .login-box {
+      background: #fff;
+      border: 1px solid #ececec;
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
+    }
+  
+    .login-heading {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+  
+    .divider {
+      border: none;
+      border-top: 1px solid #eee;
+      margin-bottom: 1.5rem;
+    }
+  
+    .social-login {
+      margin-bottom: 5%;
+  
+      .social-label {
+        color: #aaa;
+        font-size: 14px;
+        margin-bottom: 0.7rem;
+      }
+  
+      .social-buttons {
+        display: flex;
+        gap: 1.5rem;
+  
+        .social-btn {
+          background: none;
+          border: none;
+          font-weight: 600;
+          font-size: 14px;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          color: #111;
+          cursor: pointer;
+          transition: opacity 0.2s ease;
+  
+          &:hover {
+            opacity: 0.7;
+          }
+  
+          i {
+            font-size: 20px;
+          }
+        }
+      }
+    }
+  
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+  
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+  
+        label {
+          font-size: 14px;
+        }
+  
+        input {
+              /* width: 93%; */
+    padding: 1rem 1.2rem;
+    margin-left: 0.2rem;
+    height: 20px;
+    border-radius: 30px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    font-size: 14px;
+    outline: none;
+  
+          &:focus {
+            border-color: #b38a5e;
+          }
+        }
+      }
+  
+      .form-extras {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 13px;
+        margin-top: 0.2rem;
+  
+        .remember-me {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          color: #aaa;
+  
+          input {
+            transform: scale(1.1);
+          }
+        }
+  
+        .forgot-link {
+          color: #000;
+          text-decoration: none;
+          font-weight: 500;
+          cursor: pointer;
+  
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+  
+      .login-button {
+        background-color: #b38a5e;
+        color: white;
+        padding: 0.7rem 2.2rem;
+        border: none;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 14px;
+        margin-top: 1rem;
+        cursor: pointer;
+        align-self: flex-start;
+      }
+  
+      .error-message {
+        color: red;
+        margin-top: 1rem;
+      }
+    }
+  }
+  

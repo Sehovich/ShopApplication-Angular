@@ -1,0 +1,67 @@
+<div class="product-details-wrapper" *ngIf="product">
+  <!-- Left: Image & Thumbnails -->
+  <div class="product-images">
+    <img class="main-image" [src]="product.thumbnail" alt="{{ product.title }}" />
+    <div class="thumbnails">
+      <img [src]="product.thumbnail" *ngFor="let i of [1, 2, 3]" alt="thumb" />
+    </div>
+  </div>
+
+  <!-- Right: Product Info -->
+  <div class="product-info">
+    <h2>{{ product.title }}</h2>
+
+    <div class="stars">
+      <span *ngFor="let i of [1,2,3,4,5]">★</span>
+    </div>
+
+    <p class="availability">Availability: <strong>In Stock</strong></p>
+    <p class="price">€{{ product.price }}</p>
+
+    <ul class="product-description">
+      <li *ngFor="let line of product.description.split('.')">
+        <span *ngIf="line.trim().length">{{ line.trim() }}.</span>
+      </li>
+    </ul>
+
+    <div class="option-group">
+      <p><strong>Color:</strong> White / Black / Teal / Brown</p>
+      <div class="color-options">
+        <div class="color white"></div>
+        <div class="color black"></div>
+        <div class="color teal selected"></div>
+        <div class="color brown"></div>
+      </div>
+    </div>
+
+    <div class="option-group">
+      <p><strong>Pots Size:</strong></p>
+      <div class="size-options">
+        <button class="size">XS</button>
+        <button class="size">S</button>
+        <button class="size selected">M</button>
+        <button class="size">L</button>
+        <button class="size">XL</button>
+        <button class="size">XXL</button>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="wishlist" (click)="toggleFavorite()">
+        <i class="fi fi-br-heart"></i>
+        {{ isFavorite ? 'Remove from Wishlist' : 'Add to Wishlist' }}
+      </button>
+    
+     
+    </div>
+    
+    <div class="purchase-actions">
+      
+    
+      <button class="add-to-cart" (click)="addToCart()">ADD TO CART</button>
+    </div>
+    
+
+    
+  </div>
+</div>

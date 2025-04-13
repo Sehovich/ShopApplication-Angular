@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../../../shared/material.module';
 import { RouterModule } from '@angular/router';
 import { Product } from '../../../../models/product.model';
-import { ProductService } from '../../../../services/product.service';
+import { ProductService } from '../../../products/services/product.service';
 import { ProductFavouriteService } from '../../services/product-favourite.service';
 import { BasketService } from '../../../basket/services/basket.service';
 import { NotificationService } from '../../../../services/notification.service';

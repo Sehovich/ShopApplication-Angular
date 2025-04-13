@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from '../../../../shared/material.module';
 import { Product } from '../../../../models/product.model';
-import { ProductService } from '../../../../services/product.service';
+import { ProductService } from '../../services/product.service';
 import { ProductFavouriteService } from '../../../favorites/services/product-favourite.service';
 import { BasketService } from '../../../basket/services/basket.service';
 
@@ -25,6 +25,9 @@ export class ProductListPageComponent implements OnInit {
   sortBy: keyof Product = 'title';
   sortAsc = true;
   loading = false;
+  totalPages: number[] = [];
+totalCount = 100; 
+
 
   constructor(
     private productService: ProductService,
@@ -40,10 +43,15 @@ export class ProductListPageComponent implements OnInit {
 
   loadProducts() {
     this.loading = true;
+  
     this.productService.getProductsByPage(this.currentPage, this.pageSize).subscribe({
       next: (res) => {
-        this.products = this.sortProducts(res);
+        this.products = [...res]; // force copy to avoid mutation side-effects
         this.loading = false;
+  
+        // If you're faking pagination frontend-side, calculate total pages
+        const total = 100; // or hardcode your dataset size
+        this.totalPages = Array.from({ length: Math.ceil(total / this.pageSize) }, (_, i) => i + 1);
       },
       error: (err) => {
         console.error('Failed to load products', err);
@@ -51,6 +59,11 @@ export class ProductListPageComponent implements OnInit {
       }
     });
   }
+  
+  trackByProductId(index: number, product: Product): number {
+    return product.id;
+  }
+  
 
   loadFavourites() {
     this.favouriteService.getUserFavourites().subscribe({

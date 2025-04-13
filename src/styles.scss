@@ -1,16 +1,27 @@
-/* You can add global styles to this file, and also import other style files */
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
-
-.snackbar-success {
-    background-color: #4caf50;
-    color: white;
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Jost', sans-serif;
+    background-color: #fff;
+    color: #333;
   }
   
-  .snackbar-error {
-    background-color: #f44336;
-    color: white;
+  .page-wrapper {
+    padding-left: 150px;
+    padding-right: 150px;
+  
+    @media (max-width: 768px) {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+  }
+  
+  .mat-button,
+  .mat-toolbar,
+  .mat-card-title,
+  .mat-card-subtitle,
+  .mat-icon-button {
+    font-family: 'Jost', sans-serif !important;
   }
   

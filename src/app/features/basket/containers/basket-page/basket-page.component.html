@@ -1,0 +1,45 @@
+<h2>SHOPPING CART</h2>
+
+<div *ngIf="basketItems.length === 0" class="empty-message">
+  Your basket is empty.
+</div>
+
+<div class="cart-list" *ngIf="basketItems.length > 0">
+  <div class="cart-item" *ngFor="let row of basketItems">
+    <div class="product-img">
+      <img [src]="row.product.thumbnail" alt="{{ row.product.title }}" />
+    </div>
+
+    <div class="product-details">
+      <div class="product-title">{{ row.product.title }}</div>
+      <div class="product-subtitle">Brown, XS</div>
+    </div>
+
+    <div class="quantity-controls">
+      <button (click)="decreaseQuantity(row)">-</button>
+      <span>{{ row.item.quantity }}</span>
+      <button (click)="increaseQuantity(row)">+</button>
+    </div>
+
+    <div class="product-price">
+      ${{ row.product.price * row.item.quantity | number:'1.2-2' }}
+    </div>
+
+    <button class="delete-btn" (click)="removeItem(row.item.productId)">
+      <i class="fi fi-br-trash"></i>
+    </button>
+  </div>
+
+  
+  <div class="cart-footer">
+    <div class="footer-actions">
+      <div class="total">
+        Total Price: <strong>${{ totalPrice | number:'1.2-2' }}</strong>
+      </div>
+      <div class="buttons">
+        <button class="btn white">CONTINUE SHOPPING</button>
+        <button class="btn brown">CHECKOUT</button>
+      </div>
+    </div>
+  </div>
+</div>

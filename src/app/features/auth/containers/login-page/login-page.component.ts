@@ -12,6 +12,7 @@ import { BasketService } from '../../../basket/services/basket.service'; // ✅ 
 @Component({
   selector: 'app-login-page',
   templateUrl: './login-page.component.html',
+  styleUrls: ['./login-page.component.scss'],
   imports: [CommonModule, FormsModule, MaterialModule],
 })
 export class LoginPageComponent {

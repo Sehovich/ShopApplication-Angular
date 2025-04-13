@@ -8,8 +8,12 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
   selector: 'app-root',
   imports: [RouterOutlet, NavbarComponent],
   template: `
+    
+    
+    <div class="page-wrapper">
     <app-navbar></app-navbar>
-    <router-outlet></router-outlet>
+      <router-outlet></router-outlet>
+    </div>
   `,
 })
 export class AppComponent {}

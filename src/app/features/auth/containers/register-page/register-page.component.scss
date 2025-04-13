@@ -1,0 +1,74 @@
+.register-box {
+    border: 1px solid #ececec;
+    padding: 30px;
+    border-radius: 10px;
+    background: white;
+    max-width: 420px;
+    margin: 40px auto;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+    font-family: 'Jost', sans-serif;
+  }
+  
+  .form-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+  
+    label {
+      font-weight: 500;
+      margin-bottom: 6px;
+      color: #333;
+    }
+  
+    input {
+      height: 48px;
+      border: 1px solid #dcdcdc;
+      border-radius: 30px;
+      padding: 0 16px;
+      font-size: 14px;
+      outline: none;
+  
+      &:focus {
+        border-color: #b38a5e;
+      }
+    }
+  }
+  
+  .register-button {
+    background-color: #b38a5e;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-family: 'Jost', sans-serif;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  
+    &:hover {
+      background-color: #a0784e;
+    }
+  }
+  
+  .error-msg {
+    margin-top: 12px;
+    color: #f44336;
+  }
+  
+  .success-msg {
+    margin-top: 12px;
+    color: #4caf50;
+  }
+  
+  .divider {
+    border: none;
+    border-top: 1px solid #eee;
+    margin-bottom: 1.5rem;
+  }
+  

@@ -1,24 +1,65 @@
-<mat-toolbar color="primary">
-  <span>Shop</span>
-  <span class="spacer"></span>
-  <span *ngIf="username">Welcome, {{ username }}</span>
+<!-- Top welcome and language bar -->
+<div class="top-bar">
+  <span *ngIf="isLoggedIn && username; else welcomeText">
+    Welcome, {{ username }}!
+  </span>
+  <ng-template #welcomeText>
+    <span>Welcome to our online store!</span>
+  </ng-template>
 
-  
-    <button mat-button routerLink="/products">Products</button>
-    <button mat-button routerLink="/favorites">Favorites</button>
-<button mat-button routerLink="/account">My Account</button>
+  <div class="top-bar-right">
+   
+    <ng-container *ngIf="isLoggedIn; else authLinks">
+      <a (click)="logout()" class="top-link">Logout</a>
+    </ng-container>
+    <ng-template #authLinks>
+      <a routerLink="/auth/login" class="top-link">Login</a> or
+      <a routerLink="/auth/register" class="top-link">Register</a>
+    </ng-template>
+  </div>
+</div>
 
-    <button mat-button routerLink="/basket">
-      Basket <mat-icon>shopping_cart</mat-icon> ({{ basketCount }})
+
+<!-- Main navbar -->
+<mat-toolbar class="main-toolbar" color="primary">
+  <div class="left-section">
+    <span class="logo">
+      <span class="logo-sub">Perfume Store</span>
+    </span>
+  </div>
+
+
+  <div class="right-section">
+    <button mat-icon-button routerLink="/favorites">
+      <i class="fi fi-br-heart"></i>
     </button>
   
-    <ng-container *ngIf="isLoggedIn; else authLinks">
-      <button mat-button (click)="logout()">Logout</button>
-    </ng-container>
-    
-    <ng-template #authLinks>
-      <button mat-button routerLink="/auth/login">Login</button>
-      <button mat-button routerLink="/auth/register">Register</button>
-    </ng-template>
-  </mat-toolbar>
+    <button mat-icon-button routerLink="/basket" class="icon-with-badge">
+      <i class="fi fi-br-shopping-cart"></i>
+      <span class="badge" *ngIf="basketCount > 0">{{ basketCount }}</span>
+    </button>
   
+    <button mat-icon-button routerLink="/account">
+      <i class="fi fi-br-user"></i>
+    </button>
+  </div>
+  
+</mat-toolbar>
+
+<!-- Bottom Navigation -->
+<div class="bottom-navbar">
+  <div class="all-categories">
+    <mat-icon fontIcon="menu"></mat-icon>
+    <span>ALL CATEGORIES</span>
+  </div>
+
+  <nav class="main-nav">
+   
+    <button mat-button routerLink="/products">PRODUCTS</button>
+    <button mat-button>PAGES</button>
+    <button mat-button>BLOGS</button>
+    <button mat-button>ABOUT</button>
+  </nav>
+</div>
+
+
