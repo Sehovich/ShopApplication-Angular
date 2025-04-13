@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 import { BasketService } from '../../../basket/services/basket.service';
 import { NotificationService } from '../../../../services/notification.service';
 import { BasketItem } from '../../../basket/models/basket-item.model';
-
+import { Product } from '../../../../models/product.model';
 
 @Component({
   standalone: true,
@@ -15,7 +15,7 @@ import { BasketItem } from '../../../basket/models/basket-item.model';
   styleUrls: ['./basket-page.component.scss']
 })
 export class BasketPageComponent implements OnInit {
-  basketItems: any[] = [];
+  basketItems: { item: BasketItem; product: Product }[] = [];
   totalPrice = 0;
 
   constructor(
@@ -29,9 +29,9 @@ export class BasketPageComponent implements OnInit {
 
   loadBasket() {
     this.basketService.getBasketItems().subscribe({
-      next: (items) => {
-        this.basketItems = items;
-        this.totalPrice = items.reduce((sum, item) => sum + item.product.price, 0);
+      next: (data) => {
+        this.basketItems = data;
+        this.updateTotal();
       },
       error: () => {
         this.notificationService.error('Failed to load basket');
@@ -42,8 +42,8 @@ export class BasketPageComponent implements OnInit {
   removeItem(productId: number) {
     this.basketService.removeFromBasket(productId).subscribe({
       next: () => {
-        this.basketItems = this.basketItems.filter(item => item.productId !== productId);
-        this.totalPrice = this.basketItems.reduce((sum, item) => sum + item.product.price, 0);
+        this.basketItems = this.basketItems.filter(entry => entry.item.productId !== productId);
+        this.updateTotal();
         this.notificationService.success('Item removed');
       },
       error: () => {
@@ -52,31 +52,33 @@ export class BasketPageComponent implements OnInit {
     });
   }
 
+  increaseQuantity(entry: { item: BasketItem; product: Product }) {
+    const newQty = entry.item.quantity + 1;
+    this.basketService.updateQuantity(entry.item.productId, newQty).subscribe({
+      next: () => {
+        entry.item.quantity = newQty;
+        this.updateTotal();
+      },
+      error: () => this.notificationService.error('Failed to update quantity')
+    });
+  }
 
-  increaseQuantity(item: BasketItem) {
-    const newQty = item.quantity + 1;
-    this.basketService.updateQuantity(item.productId, newQty).subscribe({
+  decreaseQuantity(entry: { item: BasketItem; product: Product }) {
+    if (entry.item.quantity <= 1) return;
+    const newQty = entry.item.quantity - 1;
+    this.basketService.updateQuantity(entry.item.productId, newQty).subscribe({
       next: () => {
-        item.quantity = newQty;
+        entry.item.quantity = newQty;
         this.updateTotal();
       },
       error: () => this.notificationService.error('Failed to update quantity')
     });
   }
-  
-  decreaseQuantity(item: BasketItem) {
-    if (item.quantity <= 1) return;
-    const newQty = item.quantity - 1;
-    this.basketService.updateQuantity(item.productId, newQty).subscribe({
-      next: () => {
-        item.quantity = newQty;
-        this.updateTotal();
-      },
-      error: () => this.notificationService.error('Failed to update quantity')
-    });
-  }
-  
+
   updateTotal() {
-    this.totalPrice = this.basketItems.reduce((sum, item) => sum + item.quantity * item.product.price, 0);
+    this.totalPrice = this.basketItems.reduce(
+      (sum, entry) => sum + entry.product.price * entry.item.quantity,
+      0
+    );
   }
 }

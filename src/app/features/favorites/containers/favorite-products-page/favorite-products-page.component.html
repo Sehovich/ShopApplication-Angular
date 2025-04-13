@@ -15,6 +15,9 @@
       <p>{{ product.description }}</p>
     </mat-card-content>
     <mat-card-actions>
+      <button mat-button color="primary" (click)="addToBasket(product.id)">
+        <mat-icon>shopping_cart</mat-icon> Add to Basket
+      </button>
       <a mat-button [routerLink]="['/products', product.id]">View</a>
     </mat-card-actions>
   </mat-card>

@@ -5,8 +5,9 @@ import { RouterModule } from '@angular/router';
 import { Product } from '../../../../models/product.model';
 import { ProductService } from '../../../../services/product.service';
 import { ProductFavouriteService } from '../../services/product-favourite.service';
+import { BasketService } from '../../../basket/services/basket.service';
+import { NotificationService } from '../../../../services/notification.service';
 import { firstValueFrom } from 'rxjs';
-
 
 @Component({
   standalone: true,
@@ -20,11 +21,13 @@ export class FavoriteProductsPageComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
-    private favouriteService: ProductFavouriteService
+    private favouriteService: ProductFavouriteService,
+    private basketService: BasketService,
+    private notificationService: NotificationService
   ) {}
 
-  ngOnInit() {
-    this.loadFavorites();
+  async ngOnInit() {
+    await this.loadFavorites();
   }
 
   async loadFavorites() {
@@ -38,5 +41,17 @@ export class FavoriteProductsPageComponent implements OnInit {
     } catch (err) {
       console.error('Failed to load favorite products', err);
     }
+  }
+
+  addToBasket(productId: number): void {
+    this.basketService.addToBasket(productId).subscribe({
+      next: () => {
+        this.basketService.getBasketItems().subscribe(); // update count
+        this.notificationService.success('Product added to basket');
+      },
+      error: () => {
+        this.notificationService.error('Failed to add product to basket');
+      }
+    });
   }
 }

@@ -82,6 +82,8 @@ export class ProductListPageComponent implements OnInit {
   addToBasket(productId: number) {
     this.basketService.addToBasket(productId).subscribe({
       next: () => {
+        
+        this.basketService.getBasketItems().subscribe();
         this.notificationService.success('Added to basket');
       },
       error: () => {

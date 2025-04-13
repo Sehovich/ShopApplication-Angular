@@ -1,19 +1,44 @@
-<tr *ngFor="let item of basketItems">
-  <td>{{ item.product.title }}</td>
-  <td>
-    <button mat-icon-button (click)="decreaseQuantity(item)">
-      <mat-icon>remove</mat-icon>
-    </button>
-    {{ item.quantity }}
-    <button mat-icon-button (click)="increaseQuantity(item)">
-      <mat-icon>add</mat-icon>
-    </button>
-  </td>
-  <td>{{ item.product.price | currency }}</td>
-  <td>{{ item.product.price * item.quantity | currency }}</td>
-  <td>
-    <button mat-icon-button (click)="removeItem(item.productId)">
-      <mat-icon>delete</mat-icon>
-    </button>
-  </td>
-</tr>
+<mat-toolbar color="primary">
+  <span>Basket</span>
+</mat-toolbar>
+
+<div *ngIf="basketItems.length === 0" class="empty-message">
+  Your basket is empty.
+</div>
+
+<table mat-table class="mat-elevation-z8" *ngIf="basketItems.length > 0">
+  <thead>
+    <tr>
+      <th>Product</th>
+      <th>Quantity</th>
+      <th>Unit Price</th>
+      <th>Total</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let row of basketItems">
+      <td>{{ row.product.title }}</td>
+      <td>
+        <button mat-icon-button (click)="decreaseQuantity(row)">
+          <mat-icon>remove</mat-icon>
+        </button>
+        {{ row.item.quantity }}
+        <button mat-icon-button (click)="increaseQuantity(row)">
+          <mat-icon>add</mat-icon>
+        </button>
+      </td>
+      <td>{{ row.product.price | currency }}</td>
+      <td>{{ row.product.price * row.item.quantity | currency }}</td>
+      <td>
+        <button mat-icon-button color="warn" (click)="removeItem(row.item.productId)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="total-price" *ngIf="basketItems.length > 0">
+  <strong>Total:</strong> {{ totalPrice | currency }}
+</div>

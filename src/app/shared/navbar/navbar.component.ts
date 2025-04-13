@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../material.module';
@@ -7,7 +7,7 @@ import { NotificationService } from '../../services/notification.service';
 import { AuthStore } from '../../features/auth/store/auth.store';
 import { AuthService } from '../../services/auth.service';
 import { BasketService } from '../../features/basket/services/basket.service';
-
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
@@ -15,11 +15,12 @@ import { BasketService } from '../../features/basket/services/basket.service';
   styleUrls: ['./navbar.component.scss'],
   imports: [CommonModule, MaterialModule, RouterModule],
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, OnDestroy {
   basketCount = 0;
+  private basketSub?: Subscription;
 
   get isLoggedIn(): boolean {
-    return AuthStore.isAuthenticated(); 
+    return AuthStore.isAuthenticated();
   }
 
   get userEmail(): string | null {
@@ -38,18 +39,25 @@ export class NavbarComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    
+    this.basketSub = this.basketService.getBasketCount().subscribe({
+      next: count => this.basketCount = count,
+    });
+
+    
     if (this.isLoggedIn) {
-      this.basketService.getBasketItems().subscribe({
-        next: (items) => this.basketCount = items.length,
-        error: () => this.basketCount = 0
-      });
+      this.basketService.getBasketItems().subscribe(); 
     }
   }
 
   logout(): void {
     this.authService.logout();
+    this.basketService.clearCache(); 
     this.notificationService.success('You have been logged out');
     this.router.navigate(['/auth/login']);
   }
-}
 
+  ngOnDestroy(): void {
+    this.basketSub?.unsubscribe();
+  }
+}
