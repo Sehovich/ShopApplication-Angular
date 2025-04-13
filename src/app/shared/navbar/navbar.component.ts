@@ -1,27 +1,25 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../material.module';
-import { BasketService } from '../../services/basket.service';
+
 import { NotificationService } from '../../services/notification.service';
 import { AuthStore } from '../../features/auth/store/auth.store';
 import { AuthService } from '../../services/auth.service';
+import { BasketService } from '../../features/basket/services/basket.service';
 
 
 @Component({
-  standalone: true,
   selector: 'app-navbar',
-  imports: [CommonModule, RouterModule, MaterialModule],
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss']
+  styleUrls: ['./navbar.component.scss'],
+  imports: [CommonModule, MaterialModule, RouterModule],
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
+  basketCount = 0;
+
   get isLoggedIn(): boolean {
     return AuthStore.isAuthenticated(); 
-  }
-
-  get basketCount(): number {
-    return this.basketService.getItems().length;
   }
 
   get userEmail(): string | null {
@@ -31,7 +29,6 @@ export class NavbarComponent {
   get username(): string | null {
     return AuthStore.getUsername();
   }
-  
 
   constructor(
     private router: Router,
@@ -40,9 +37,19 @@ export class NavbarComponent {
     private authService: AuthService
   ) {}
 
+  ngOnInit(): void {
+    if (this.isLoggedIn) {
+      this.basketService.getBasketItems().subscribe({
+        next: (items) => this.basketCount = items.length,
+        error: () => this.basketCount = 0
+      });
+    }
+  }
+
   logout(): void {
     this.authService.logout();
     this.notificationService.success('You have been logged out');
     this.router.navigate(['/auth/login']);
   }
 }
+

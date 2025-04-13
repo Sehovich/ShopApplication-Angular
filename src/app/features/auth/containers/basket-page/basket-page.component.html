@@ -1,23 +1,19 @@
-<mat-toolbar color="primary">
-    <span>Basket</span>
-  </mat-toolbar>
-  
-  <mat-card *ngFor="let product of items">
-    <mat-card-title>{{ product.title }}</mat-card-title>
-    <mat-card-subtitle>\${{ product.price }}</mat-card-subtitle>
-    <mat-card-content>
-      <p>{{ product.description }}</p>
-    </mat-card-content>
-    <mat-card-actions>
-      <button mat-button color="warn" (click)="remove(product.id)">Remove</button>
-    </mat-card-actions>
-  </mat-card>
-  
-  <div *ngIf="items.length > 0" style="margin-top: 1rem;">
-    <button mat-stroked-button color="warn" (click)="clear()">Clear Basket</button>
-  </div>
-  
-  <div *ngIf="items.length === 0">
-    <p>Your basket is empty.</p>
-  </div>
-  
+<tr *ngFor="let item of basketItems">
+  <td>{{ item.product.title }}</td>
+  <td>
+    <button mat-icon-button (click)="decreaseQuantity(item)">
+      <mat-icon>remove</mat-icon>
+    </button>
+    {{ item.quantity }}
+    <button mat-icon-button (click)="increaseQuantity(item)">
+      <mat-icon>add</mat-icon>
+    </button>
+  </td>
+  <td>{{ item.product.price | currency }}</td>
+  <td>{{ item.product.price * item.quantity | currency }}</td>
+  <td>
+    <button mat-icon-button (click)="removeItem(item.productId)">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </td>
+</tr>
