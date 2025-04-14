@@ -1,59 +1,88 @@
-# ShopClient
+# 🛍️ Perfume Store Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.4.
+This is the Angular frontend for the **Perfume Store** web application, designed with a responsive UI and modern shopping functionality.
 
-## Development server
+---
 
-To start a local development server, run:
+## 🚀 Getting Started
 
-```bash
-ng serve
-```
+### Prerequisites
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- Node.js (v18+ recommended)
+- Angular CLI (`npm install -g @angular/cli`)
+- Package Manager (npm or yarn)
 
-## Code scaffolding
+### Installation
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+1. Clone the repository:
 
 ```bash
-ng generate --help
-```
+git clone https://github.com/your-username/perfume-store-frontend.git
+cd perfume-store-frontend
 
-## Building
 
-To build the project run:
+✅ Features Implemented
+🧭 Navigation
+Responsive Navbar with:
 
-```bash
-ng build
-```
+Welcome text and authentication state
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Desktop: icon-based navigation (favorites, basket, account)
 
-## Running unit tests
+Mobile: toggle drawer with full-width buttons
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+Bottom Navigation bar with category links
 
-```bash
-ng test
-```
+🛒 Basket
+Add to basket from product list and product details
 
-## Running end-to-end tests
+Quantity increment/decrement
 
-For end-to-end (e2e) testing, run:
+Persistent basket count in navbar
 
-```bash
-ng e2e
-```
+Products grouped by ID, avoiding duplicates
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Total price calculation
 
-## Additional Resources
+❤️ Favorites
+Add/remove products to/from favorites
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+View all favorited products in a styled layout
+
+Add to basket directly from favorites
+
+📦 Products
+Product listing with pagination and sorting
+
+Server-side pagination integration
+
+Product details view with feature information
+
+Price formatting and star rating layout
+
+👤 Authentication
+Login and register forms styled to match the UI
+
+Displays user information on "My Account" page
+
+Conditional logic based on authentication state
+
+💅 Styling
+Responsive across mobile, tablet, and desktop
+
+Reusable SCSS classes
+
+Styled buttons, icons, cards, and layout sections
+
+🛠 Tech Stack
+Angular 16+
+
+SCSS
+
+RxJS
+
+Angular Material for components
+
+Font Icons from fi set
+
+
