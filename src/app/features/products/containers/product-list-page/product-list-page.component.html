@@ -10,7 +10,7 @@
     class="product-card"
     *ngFor="let product of products; trackBy: trackByProductId"
   >
-    <div class="badge-new">New</div>
+
 
     <div class="product-image">
       <img [src]="product.thumbnail" [alt]="product.title" />
@@ -40,24 +40,25 @@
   </div>
 </div>
 
-<!-- Pagination -->
 <div class="pagination">
   <button class="page-btn" (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">
     &lt;
   </button>
+
   <button
     class="page-btn"
-    *ngFor="let page of totalPages"
+    *ngFor="let page of paginationRange"
+    [disabled]="page === -1 || page === -2"
     [ngClass]="{ active: page === currentPage }"
-    (click)="changePage(page)"
-  >
-    {{ page }}
+    (click)="page > 0 && changePage(page)">
+    <ng-container *ngIf="page > 0">{{ page }}</ng-container>
+    <ng-container *ngIf="page === -1">...</ng-container>
+    <ng-container *ngIf="page === -2">...</ng-container>
   </button>
-  <button
-    class="page-btn"
-    (click)="changePage(currentPage + 1)"
-    [disabled]="currentPage === totalPages.length"
-  >
+
+  <button class="page-btn" (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">
     &gt;
   </button>
 </div>
+<hr class="divider" />
+

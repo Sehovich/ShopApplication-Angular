@@ -6,7 +6,6 @@ import { Product } from '../../../../models/product.model';
 import { ProductService } from '../../services/product.service';
 import { ProductFavouriteService } from '../../../favorites/services/product-favourite.service';
 import { BasketService } from '../../../basket/services/basket.service';
-
 import { AuthStore } from '../../../auth/store/auth.store';
 import { NotificationService } from '../../../../services/notification.service';
 
@@ -25,9 +24,10 @@ export class ProductListPageComponent implements OnInit {
   sortBy: keyof Product = 'title';
   sortAsc = true;
   loading = false;
-  totalPages: number[] = [];
-totalCount = 100; 
-
+  totalPages = 0;
+  paginationRange: number[] = [];
+  totalCount = 0;
+  maxPagesToShow = 3;
 
   constructor(
     private productService: ProductService,
@@ -43,15 +43,16 @@ totalCount = 100;
 
   loadProducts() {
     this.loading = true;
-  
+
     this.productService.getProductsByPage(this.currentPage, this.pageSize).subscribe({
       next: (res) => {
-        this.products = [...res]; // force copy to avoid mutation side-effects
+        this.products = this.sortProducts(res.items);
+        this.totalCount = res.totalCount;
+
+        this.totalPages = Math.ceil(this.totalCount / this.pageSize);
+        this.paginationRange = this.getPaginationRange(this.currentPage, this.totalPages);
+
         this.loading = false;
-  
-        // If you're faking pagination frontend-side, calculate total pages
-        const total = 100; // or hardcode your dataset size
-        this.totalPages = Array.from({ length: Math.ceil(total / this.pageSize) }, (_, i) => i + 1);
       },
       error: (err) => {
         console.error('Failed to load products', err);
@@ -59,11 +60,30 @@ totalCount = 100;
       }
     });
   }
+
+  getPaginationRange(current: number, total: number): number[] {
+    const range: number[] = [];
   
+    const half = Math.floor(this.maxPagesToShow / 2);
+    let start = Math.max(current - half, 1);
+    let end = start + this.maxPagesToShow - 1;
+  
+    if (end > total) {
+      end = total;
+      start = Math.max(end - this.maxPagesToShow + 1, 1);
+    }
+  
+    for (let i = start; i <= end; i++) {
+      range.push(i);
+    }
+  
+    return range;
+  }
+  
+
   trackByProductId(index: number, product: Product): number {
     return product.id;
   }
-  
 
   loadFavourites() {
     this.favouriteService.getUserFavourites().subscribe({
@@ -95,7 +115,6 @@ totalCount = 100;
   addToBasket(productId: number) {
     this.basketService.addToBasket(productId).subscribe({
       next: () => {
-        
         this.basketService.getBasketItems().subscribe();
         this.notificationService.success('Added to basket');
       },
@@ -106,8 +125,10 @@ totalCount = 100;
   }
 
   changePage(page: number) {
-    this.currentPage = page;
-    this.loadProducts();
+    if (page !== this.currentPage && page > 0 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.loadProducts();
+    }
   }
 
   toggleSort(field: keyof Product) {

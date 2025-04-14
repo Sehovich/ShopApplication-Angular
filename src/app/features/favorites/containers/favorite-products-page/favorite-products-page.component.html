@@ -1,24 +1,27 @@
-<mat-toolbar color="accent">
-  <span>My Favorite Products</span>
-</mat-toolbar>
+<h2>MY FAVORITE PRODUCTS</h2>
 
-<div *ngIf="favoriteProducts.length === 0" class="empty">
-  <p>You haven't added any favorite products yet.</p>
+<div *ngIf="favoriteProducts.length === 0" class="empty-message">
+  You haven't added any favorite products yet.
 </div>
 
-<div class="product-grid" *ngIf="favoriteProducts.length > 0">
-  <mat-card class="product-card" *ngFor="let product of favoriteProducts">
-    <img mat-card-image [src]="product.thumbnail" />
-    <mat-card-title>{{ product.title }}</mat-card-title>
-    <mat-card-subtitle>\${{ product.price }}</mat-card-subtitle>
-    <mat-card-content>
-      <p>{{ product.description }}</p>
-    </mat-card-content>
-    <mat-card-actions>
-      <button mat-button color="primary" (click)="addToBasket(product.id)">
-        <mat-icon>shopping_cart</mat-icon> Add to Basket
+<div class="cart-list" *ngIf="favoriteProducts.length > 0">
+  <div class="cart-item" *ngFor="let product of favoriteProducts">
+    <div class="product-img">
+      <img [src]="product.thumbnail" alt="{{ product.title }}" />
+    </div>
+
+    <div class="product-details">
+      <div class="product-title">{{ product.title }}</div>
+      <div class="product-subtitle">${{ product.price | number:'1.2-2' }}</div>
+    </div>
+
+    <div class="product-actions">
+      <button class="btn brown" (click)="addToBasket(product.id)">
+        <i class="fi fi-br-shopping-cart"></i> Add to Basket
       </button>
-      <a mat-button [routerLink]="['/products', product.id]">View</a>
-    </mat-card-actions>
-  </mat-card>
+      <a class="btn white" [routerLink]="['/products', product.id]">View</a>
+    </div>
+
+  
+  </div>
 </div>

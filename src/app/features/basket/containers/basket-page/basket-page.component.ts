@@ -74,6 +74,19 @@ export class BasketPageComponent implements OnInit {
   }
   
 
+  addToBasket(productId: number) {
+    this.basketService.addToBasket(productId).subscribe({
+      next: () => {
+        this.basketService.getBasketItems().subscribe();
+        this.notificationService.success('Added to basket');
+      },
+      error: () => {
+        this.notificationService.error('Failed to add to basket');
+      }
+    });
+  }
+  
+
 removeItem(productId: number) {
   const entry = this.basketItems.find(e => e.item.productId === productId);
   if (!entry) return;
