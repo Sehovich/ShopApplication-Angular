@@ -1,11 +1,24 @@
-<mat-card *ngIf="!isLoading && userInfo">
-  <mat-card-title>Welcome, {{ userInfo.username }}!</mat-card-title>
-  <mat-card-content>
-    <p><strong>Email:</strong> {{ userInfo.email }}</p>
-    <p><strong>User ID:</strong> {{ userInfo.id }}</p>
-  </mat-card-content>
-</mat-card>
+<div class="account-container" *ngIf="!isLoading && userInfo">
+  <h2>My Account</h2>
 
-<div *ngIf="isLoading">
-  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+  <div class="user-info-card">
+    <div class="user-row">
+      <span class="label">Username:</span>
+      <span>{{ userInfo.username }}</span>
+    </div>
+
+    <div class="user-row">
+      <span class="label">Email:</span>
+      <span>{{ userInfo.email }}</span>
+    </div>
+
+    <div class="user-row">
+      <span class="label">User ID:</span>
+      <span>{{ userInfo.id }}</span>
+    </div>
+  </div>
+</div>
+
+<div class="account-loading" *ngIf="isLoading">
+  <mat-spinner mode="indeterminate" diameter="50"></mat-spinner>
 </div>

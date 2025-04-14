@@ -18,9 +18,19 @@ import { Subscription } from 'rxjs';
 export class NavbarComponent implements OnInit, OnDestroy {
   basketCount = 0;
   private basketSub?: Subscription;
+  isMobileView = false;
+  drawerOpen = false;
 
   get isLoggedIn(): boolean {
     return AuthStore.isAuthenticated();
+  }
+
+  toggleDrawer() {
+    this.drawerOpen = !this.drawerOpen;
+  }
+  
+  closeDrawer() {
+    this.drawerOpen = false;
   }
 
   get userEmail(): string | null {
@@ -42,10 +52,19 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.basketSub = this.basketService.getBasketCount().subscribe({
       next: count => this.basketCount = count,
     });
-
+  
     if (this.isLoggedIn) {
       this.basketService.getBasketItems().subscribe();
     }
+  
+    // Detect mobile view
+    this.checkScreenSize();
+    window.addEventListener('resize', this.checkScreenSize.bind(this));
+  }
+  
+ 
+  checkScreenSize() {
+    this.isMobileView = window.innerWidth <= 768;
   }
 
   logout(): void {

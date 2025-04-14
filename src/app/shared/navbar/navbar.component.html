@@ -8,7 +8,6 @@
   </ng-template>
 
   <div class="top-bar-right">
-   
     <ng-container *ngIf="isLoggedIn; else authLinks">
       <a (click)="logout()" class="top-link">Logout</a>
     </ng-container>
@@ -19,17 +18,18 @@
   </div>
 </div>
 
-
-<!-- Main navbar -->
 <mat-toolbar class="main-toolbar" color="primary">
   <div class="left-section">
     <span class="logo">
       <span class="logo-sub">Perfume Store</span>
     </span>
+    <button class="hamburger" (click)="toggleDrawer()">
+      <mat-icon>menu</mat-icon>
+    </button>
   </div>
 
-
-  <div class="right-section">
+  <!-- Desktop Icons -->
+  <div class="right-section desktop-icons" *ngIf="!isMobileView">
     <button mat-icon-button routerLink="/favorites">
       <i class="fi fi-br-heart"></i>
     </button>
@@ -46,6 +46,15 @@
   
 </mat-toolbar>
 
+<!-- Mobile Drawer -->
+<div class="mobile-drawer" [class.open]="drawerOpen">
+  <button routerLink="/favorites" class="drawer-btn" (click)="closeDrawer()">Favorites</button>
+  <button routerLink="/basket" class="drawer-btn" (click)="closeDrawer()">Basket ({{ basketCount }})</button>
+  <button routerLink="/account" class="drawer-btn" (click)="closeDrawer()">My Account</button>
+</div>
+
+
+
 <!-- Bottom Navigation -->
 <div class="bottom-navbar">
   <div class="all-categories">
@@ -54,12 +63,9 @@
   </div>
 
   <nav class="main-nav">
-   
     <button mat-button routerLink="/products">PRODUCTS</button>
     <button mat-button>PAGES</button>
     <button mat-button>BLOGS</button>
     <button mat-button>ABOUT</button>
   </nav>
 </div>
-
-

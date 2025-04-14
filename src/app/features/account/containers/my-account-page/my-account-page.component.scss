@@ -1,0 +1,45 @@
+.account-container {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 1rem;
+    font-family: 'Jost', sans-serif;
+  
+    h2 {
+      font-size: 28px;
+      color: #b8956e;
+      font-weight: bold;
+      margin-bottom: 1.5rem;
+    }
+  
+    .user-info-card {
+      background-color: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+  
+    .user-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      font-size: 16px;
+  
+      .label {
+        color: #888;
+        font-weight: 600;
+      }
+  
+      span:last-child {
+        font-weight: 500;
+        color: #333;
+      }
+    }
+  }
+  
+  .account-loading {
+    display: flex;
+    justify-content: center;
+    margin-top: 3rem;
+  }
+  
